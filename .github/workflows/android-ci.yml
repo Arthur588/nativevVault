@@ -1,0 +1,34 @@
+name: Android CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '20'
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+        with:
+          api-level: 34
+          build-tools: '34.0.0'
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+        working-directory: vault-app
+      - name: Build
+        run: ./gradlew clean assembleRelease
+        working-directory: vault-app
+      - name: Upload APK
+        uses: actions/upload-artifact@v3
+        with:
+          name: app-release
+          path: vault-app/app/build/outputs/apk/release/app-release.apk
