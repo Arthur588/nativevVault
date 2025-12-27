@@ -14,5 +14,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "vault-app"
+rootProject.name = "nativevVault"
 include(":app")
